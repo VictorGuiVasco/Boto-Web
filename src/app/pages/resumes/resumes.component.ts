@@ -52,12 +52,9 @@ export class ResumesComponent {
     this.apiService
       .getCompleteResume()
       .then((response) => {
-        console.log(response.data);
         this.resumes = response.data;
       })
-      .catch((error) => {
-        console.log(error);
-      });
+      .catch((error) => {});
   }
 
   ngOnInit(): void {
