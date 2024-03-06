@@ -1,10 +1,14 @@
-import { NgFor } from '@angular/common';
+import { NgFor, NgIf } from '@angular/common';
 import { Component } from '@angular/core';
+import { AxiosService } from '../../../libs/axios.service';
+
+import { transformMonthsInYears } from '../../../utils/transformMonthsInYears';
+import { compareAcademicInformation } from '../../../utils/compareAcademicInformation';
 
 @Component({
   selector: 'app-resumes',
   standalone: true,
-  imports: [NgFor],
+  imports: [NgFor, NgIf],
   templateUrl: './resumes.component.html',
   styleUrl: './resumes.component.css',
 })
@@ -40,4 +44,31 @@ export class ResumesComponent {
       option: 'Doutorado',
     },
   ];
+  resumes: Resume[] = [];
+
+  constructor(private apiService: AxiosService) {}
+
+  getResumes() {
+    this.apiService
+      .getCompleteResume()
+      .then((response) => {
+        console.log(response.data);
+        this.resumes = response.data;
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
+  ngOnInit(): void {
+    this.getResumes();
+  }
+
+  transformMonthsInYears(time: number): string {
+    return transformMonthsInYears(time);
+  }
+
+  compareAcademicInformation(resume: Resume): string {
+    return compareAcademicInformation(resume);
+  }
 }

@@ -8,6 +8,10 @@ export class AxiosService {
   constructor() {}
 
   getResumes() {
-    return api.get('/');
+    return api.get('/pessoa');
+  }
+
+  getCompleteResume() {
+    return api.get('/completeResume');
   }
 }
