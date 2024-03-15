@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormsModule, FormControl, ReactiveFormsModule } from '@angular/forms';
 
 import { AxiosService } from '../../../libs/axios.service';
+import { GetTextFromPDF } from '../../../utils/extractTextFromPDF';
 
 @Component({
   selector: 'app-register',
@@ -13,19 +14,20 @@ import { AxiosService } from '../../../libs/axios.service';
 export class RegisterComponent {
   nome = new FormControl('');
   fullText = '';
-  formData = new FormData();
+  file: FileList | null = null;
 
   constructor(private apiService: AxiosService) {}
 
   updateFile(event: any) {
-    const file = event.target.files[0];
-    this.formData.append('file', file);
+    const file: FileList = event.target.files[0];
+    this.file = file;
   }
 
   uploadData() {
-    this.apiService.post({
-      nome: this.nome.value ?? '',
-      fullText: this.fullText,
-    });
+    const { link, fullText } = GetTextFromPDF(this.file);
+    // this.apiService.post({
+    //   nome: this.nome.value ?? '',
+    //   fullText: this.fullText,
+    // });
   }
 }
