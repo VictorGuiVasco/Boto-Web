@@ -4,6 +4,12 @@ import { FormsModule, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { AxiosService } from '../../../libs/axios.service';
 import { GetTextFromPDF } from '../../../utils/extractTextFromPDF';
 
+declare global {
+  interface Window {
+    handleGlobalText: () => any;
+  }
+}
+
 @Component({
   selector: 'app-register',
   standalone: true,
@@ -24,10 +30,13 @@ export class RegisterComponent {
   }
 
   uploadData() {
-    const { link, fullText } = GetTextFromPDF(this.file);
-    // this.apiService.post({
-    //   nome: this.nome.value ?? '',
-    //   fullText: this.fullText,
-    // });
+    setTimeout(() => {
+      window.handleGlobalText().then((resp: any) => {
+        this.apiService.post({
+          nome: this.nome.value ?? '',
+          fullText: resp,
+        });
+      });
+    }, 1000);
   }
 }

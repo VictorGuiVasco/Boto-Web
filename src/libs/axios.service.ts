@@ -16,6 +16,7 @@ export class AxiosService {
   }
 
   post(data: { nome: string; fullText: string }) {
+    console.log('data', data);
     return api.post('/pessoa', data);
   }
 }
